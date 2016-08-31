@@ -1,7 +1,15 @@
 <div>
 <h1>Lab 3</h1>
+
+<p>{{currentUser}}</p>
+<p>{{fs_loggedOn}}</p>
 <ul>
-<li><a href = "#/login">Login</a></li>
+<li><a href = "#/newuser">Create New User</a></li>
+<li ng-if="!loggedOn"><a href = "#/login">Login</a></li>
+<li ng-if="!fsloggedOn"><a href = "https://foursquare.com/oauth2/authenticate?client_id=1BM5TKMPHSUMBNAQHQ2NQPWQXJ1CJU2LCEVAKEYWGJ2NHZOS&response_type=code&redirect_uri=http://ec2-54-191-253-77.us-west-2.compute.amazonaws.com:3333/api/fsredirect">Login to foursquare</a></li>
+<li ng-if="loggedOn"><a href = "#/content/{{me}}">View My Content</a></li>
+<li><a href = "#/userlist">View Other Users</a></li>
+<li ng-if="loggedOn"><a href = "/api/logout">logout</a></li>
 </ul>
 
 

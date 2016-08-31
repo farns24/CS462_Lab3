@@ -9,9 +9,15 @@
   "author": "Mike Farnsworth",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.5.8",
+    "angular-route": "^1.5.8",
     "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
-    "jsonwebtoken": "^7.0.1",
-    "morgan": "^1.7.0"
+    "jsonwebtoken": "^7.1.6",
+    "mongoose": "^4.5.5",
+    "morgan": "^1.7.0",
+    "ng-cookies": "^1.0.2",
+    "request": "^2.73.0"
   }
 }

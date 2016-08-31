@@ -1,6 +1,7 @@
 <div>
 
-	<form>
-		<input type="text"/>
-	</form>
+<form ng-submit="submit()">
+    <input ng-model="user.username" type="text" name="user" placeholder="Username" />
+    <input type="submit" value="Login" />
+  </form>
 </div>

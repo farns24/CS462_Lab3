@@ -1,0 +1,13 @@
+<div>
+<h1>{{user}}'s Page</h1>
+
+<h2>Checkins</h2>
+
+<div ng-repeat="venue in checkins.response.recent">
+
+<h3>{{venue.venue.name}}</h3>
+<p>{{venue.venue.location.formattedAddress[0]}}</p>
+</div>
+<!--<p>{{checkins.response.recent[0]}}</p>-->
+
+</div>
