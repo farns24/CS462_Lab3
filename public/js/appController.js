@@ -6,7 +6,7 @@ angular.module('myApp', ['ngRoute'])
 
             // route for the home page
                    .when('/home', {
-                              templateUrl : 'html/home.html',
+                                templateUrl : 'html/home.html',
                                 controller  : 'homeCtlr'
                     }).when('/login',{
 				templateUrl : 'html/login.html',
@@ -34,7 +34,7 @@ angular.module('myApp', ['ngRoute'])
    .success(function (data, status, headers, config) {
   
 		$scope.me = (data.name);
-		if (typeof $scope.me != "undefined")
+		if (typeof $scope.me != "undefined" && $scope.me!="notLoggedIn.")
 		{
 			$scope.loggedOn = true;
 			$scope.currentUser = "Currently Logged on :"+$scope.me;

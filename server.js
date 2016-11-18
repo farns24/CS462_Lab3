@@ -51,16 +51,16 @@ app.get('/setup', function(req, res) {
 
 
 app.get('/api/fsredirect', function(req,res){
-
+	debugger;
 	var url = require('url');
 	var url_parts = url.parse(req.url, true);
 	var query = url_parts.query;
 	var code = query.code;
 	var cli_id = "1BM5TKMPHSUMBNAQHQ2NQPWQXJ1CJU2LCEVAKEYWGJ2NHZOS";
 	var cli_sec = "NXTH2TXJRY3Y3MBTAOWJNQ12ITTV5RHKADHNKYVV0V2CZFHG";	
-	var fsUrl = "/oauth2/access_token?client_id="+ cli_id +"&client_secret="+cli_sec  +"&grant_type=authorization_code&redirect_uri=http://ec2-54-191-253-77.us-west-2.compute.amazonaws.com:3333/api/fsredirect&code="+code;
+	var fsUrl = "/oauth2/access_token?client_id="+ cli_id +"&client_secret="+cli_sec  +"&grant_type=authorization_code&redirect_uri=http://104.236.235.18:3333/api/fsredirect&code="+code;
 
-	debugger;
+//	debugger;
 
 	var options = {
   	host: 'foursquare.com',
@@ -103,12 +103,14 @@ User.findOne({
 
 app.get('/api/logout',function(req,res){
 
-    res.clearCookie('user');
-    res.clearCookie('fs_at');
 
-//    res.json({success: true});
+    request.post("https://foursquare.com/logout",function(err,fres,body)
+    {	
+	//Redirect
+        res.clearCookie('user');
+        res.clearCookie('fs_at');
 	res.redirect('/index.html#/home');
-	
+    });	
 });
 
 /**
@@ -179,8 +181,8 @@ if(mm<10) {
     mm='0'+mm
 } 
 
-today = yyyy +mm +dd;
-
+today = yyyy+'' +mm+'' +dd;
+debugger;
 if (typeof accessToken != 'undefined' && typeof user != 'undefined')
 {
 
@@ -190,7 +192,7 @@ if (typeof accessToken != 'undefined' && typeof user != 'undefined')
 	User.findOne({
     name: user
   }, function(err, user) {
-
+	debugger;
     if (err) throw err;
 
           if (!user) {
