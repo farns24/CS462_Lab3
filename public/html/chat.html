@@ -1,0 +1,22 @@
+<div>
+	<h1>Gossip Protocol Chat</h1>
+
+	<div>
+		<ul ng-repeat='msg in chatState.rumors'>
+			<li>{{msg}}</li>
+		</ul>
+	</div>
+
+<form ng-submit="submit()">
+    <input ng-model="myMsg" type="text" name="myMsg" placeholder="Enter Message Here" />
+    <input type="submit" value="Send" />
+  </form>
+</div>
+<!--	<form action="api/sendChat" name="chatForm"  method="POST">	
+		<input type="text" id="msgId" name="msgId" form="chatForm">
+	
+		</input>
+		<input type="submit" value="Send">
+	</form>-->
+
+</div>

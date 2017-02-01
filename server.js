@@ -4,6 +4,7 @@ var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var mongoose    = require('mongoose');
 var request     = require('request');
+const uuidV1 = require('uuid/v1');
 
 var cookieParser = require('cookie-parser');
 
@@ -13,9 +14,11 @@ var jwt    = require('jsonwebtoken');
 
 var dbConfig = require('./src/myMongo');
 var User = require('./src/User');
-
+//var ChatState = require('./src/ChatState');
+var GossipFacade = require('./src/GossipFacade');
+var gossipF = new GossipFacade();
 var port = 3333;
-
+var chatState = {"rumors":[{"MessageId":"id","Originator":"Bob","Text":"Hello World"}]};
 mongoose.connect(dbConfig.database);
 
 var config = require('./config'); 
@@ -27,7 +30,6 @@ app.use(cookieParser());
 app.set('superSecret', dbConfig.secret);
 
 app.use(morgan('dev'));
-
 app.get('/setup', function(req, res) {
 
   // create a sample user
@@ -37,6 +39,7 @@ app.get('/setup', function(req, res) {
     admin: true ,
     checkins: []
       });
+
 
      	
   
@@ -82,7 +85,7 @@ app.get('/api/fsredirect', function(req,res){
 
 
 app.post('/authenticate', function (req, res) {
-  debugger;
+
   
 User.findOne({
     name: req.body.username
@@ -221,6 +224,20 @@ app.get('/api/user', function(req,res){
 });
 
 
+app.get( "/api/chatstate", function(req,res){
+	//Return State of Chat
+
+	res.json(chatState);
+//	chatStat
+});
+
+
+app.post( "/api/sendChat", function(req,res){
+	//Return State of Chat
+	var msg = req.body.msgId;
+	chatState.rumors.push({"MessageId":"id","Originator":"Bob","Text":msg});
+//	chatStat
+});
 
 app.use(express.static('public'));
 

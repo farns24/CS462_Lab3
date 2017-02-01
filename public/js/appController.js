@@ -22,7 +22,13 @@ angular.module('myApp', ['ngRoute'])
 			}).when('/userlist',{
                                 templateUrl : 'html/userList.html',
                                 controller : 'userListCtlr'
-                        }).otherwise({redirectTo:'/home'});
+                        })
+			
+			.when('/chat',{
+                                templateUrl : 'html/chat.html',
+                                controller : 'chatCtlr'
+			})
+		.otherwise({redirectTo:'/home'});
 
 
  })
@@ -69,6 +75,33 @@ angular.module('myApp', ['ngRoute'])
 		});
 	$scope.checkins = JSON.parse(user.checkins);
 	});
+
+})
+
+.controller("chatCtlr", function($scope,$http,$routeParams, $window){
+	
+	
+	$scope.submit = function () {
+	var msg = JSON.stringify({"msgId":$scope.myMsg});
+
+
+	    $http
+	      .post('/api/sendChat',msg)
+	      .success(function (data, status, headers, config) {
+	      })
+  	    .error(function (data, status, headers, config) {
+        
+                                       });
+                         };
+
+
+	$scope.user = $routeParams.user;
+	setInterval(function(){
+	 	$http({url: "/api/chatstate", method:"GET"}).success(function(data,staus,headers,config){
+			$scope.chatState = data;
+		});
+	
+	},500);
 
 })
 .controller("userListCtlr",function($scope,$http, $window){

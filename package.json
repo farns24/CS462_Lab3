@@ -4,7 +4,7 @@
   "description": "Multi-Tenanted API and OAuth",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test"
   },
   "author": "Mike Farnsworth",
   "license": "ISC",
@@ -12,12 +12,14 @@
     "angular": "^1.5.8",
     "angular-route": "^1.5.8",
     "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
     "jsonwebtoken": "^7.1.6",
     "mongoose": "^4.5.5",
     "morgan": "^1.7.0",
     "ng-cookies": "^1.0.2",
-    "request": "^2.73.0"
+    "request": "^2.73.0",
+    "uuid": "^3.0.1"
   }
 }
