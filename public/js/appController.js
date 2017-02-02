@@ -81,8 +81,37 @@ angular.module('myApp', ['ngRoute'])
 .controller("chatCtlr", function($scope,$http,$routeParams, $window){
 	
 	
+    $http({url: '/api/currentUser?', method: 'GET'})
+   .success(function (data, status, headers, config) {
+  
+		$scope.me = (data.name);
+		if (typeof $scope.me != "undefined" && $scope.me!="notLoggedIn.")
+		{
+			$scope.loggedOn = true;
+			$scope.currentUser = "Currently Logged on :"+$scope.me;
+		}
+		else
+		{
+			$scope.loggedOn = false;
+			$scope.currentUser = "No User logged on";
+		}
+
+		//find out if logged onto foursquare
+		//
+		if (typeof data.cookies.fs_at!= 'undefined')
+		{
+			$scope.fsloggedOn = true;
+		}
+		else
+		{
+			$scope.fsloggedOn = false;
+		}
+
+	});
+	
+
 	$scope.submit = function () {
-	var msg = JSON.stringify({"msgId":$scope.myMsg});
+	var msg = JSON.stringify({"name":$scope.me,"msgId":$scope.myMsg});
 
 
 	    $http

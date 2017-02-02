@@ -235,7 +235,8 @@ app.get( "/api/chatstate", function(req,res){
 app.post( "/api/sendChat", function(req,res){
 	//Return State of Chat
 	var msg = req.body.msgId;
-	chatState.rumors.push({"MessageId":"id","Originator":"Bob","Text":msg});
+	var name = req.body.name;
+	chatState.rumors.push({"MessageId":"id","Originator":name,"Text":msg});
 //	chatStat
 });
 
