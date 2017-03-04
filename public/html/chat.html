@@ -1,9 +1,16 @@
 <div>
 	<h1>Gossip Protocol Chat</h1>
-
+	{{me}}
 	<div>
-		<ul ng-repeat='msg in chatState.rumors'>
-			<li>{{msg}}</li>
+		<ul ng-repeat='(id,msg) in chatState.messages'>
+			<li>
+				
+				<div ng-if="msg.Originator==me" class="btn btn-primary"><span class="badge">Me</span>
+				{{msg.Text}}</div>
+				
+				<div ng-if="msg.Originator!=me" class="btn btn-warning"><span class="badge">{{msg.Originator}}</span>
+				{{msg.Text}}</div>
+			</li>
 		</ul>
 	</div>
 

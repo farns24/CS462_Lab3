@@ -20,14 +20,14 @@ var User = require('./src/User');
 var GossipFacade = require('./src/GossipFacade');
 var MyRestGw = require('./src/RestGateway');
 var MyDao = require('./src/Dao');
-var urls = {"peer0":"http://104.236.235.18:4444"};
-var peers = ["peer0"];
+var urls = {};
+var peers = [];
 var dao = new MyDao();
 var restGw = new MyRestGw();
 
 
 
-var port = 3333;
+var port = 4444;
 var gossipF = new GossipFacade(peers,urls,dao,restGw,"http://104.236.235.18:"+ port);//:=var chatState = {"rumors":[]};
 mongoose.connect(dbConfig.database);
 
@@ -273,5 +273,5 @@ app.use(express.static('public'));
 
 app.listen(port);
 
-console.log("App Started on port 3333");
+console.log("App Started on port "+ port);
 

@@ -1,28 +1,55 @@
+/*
+Add Method to insert new message to state
+remove state from server.js
+*/
+
 const uuidV4 = require('uuid/v4');
 const us = require('../node_modules/underscore/underscore-min.js');
-function GossipFacade(peers, urls,dao,rg)
+function GossipFacade(peers, urls,dao,rg,hst)
 {
 	this.time = 30000;
- 	this.host = "host";
+ 	this.host = hst;
 	this.dao = dao;
 	this.rg = rg;
-	this.state = {'sequence': 0 , 'uid': uuidV4() ,'peers':peers,'urls':urls , 'messages':{"ABCD-1234-ABCD-1234-ABCD-1234:5":
-			{
-                		"Originator": "Phil",
-                		"Text": "Hello World!",
-				"EndPoint": "localhost:3222" 
-                	}
-		}
+ 	this.updateInterval = 1000;	
+	this.state = {'host':hst,'sequence': 0 , 'uid': uuidV4() ,'peers':peers,'urls':urls , 'messages':{}
 };
 
 }
+
+GossipFacade.prototype.checkRegistry= function(host)
+{
+	var urlList = us.values(this.state.urls);
+	if (typeof us.find(urlList ,function(hs){return host == hs;})=="undefined")
+	{
+		var freshNode ="node" + urlList.length; 
+		this.state.peers.push(freshNode);
+		this.state.urls[freshNode]= host;
+		debugger;
+	}
+}
+
+GossipFacade.prototype.addMessage = function(message)
+{
+	if (!this.state.uid || typeof this.state.uid == "undefined")
+	{
+		throw new Exception("Uid is undefined");
+	}
+
+//	if (!this.state.sequence || typeof this.state.sequence  == "undefined")
+	{
+//		throw new Exception("Sequence is undefined");
+	}
+	this.state.messages[this.state.uid+":"+this.state.sequence++] = message;
+}
+
 /**
 * 
 *@return: random peer
 */
 GossipFacade.prototype.getPeer = function(state)
 {
-	us.shuffle(this.peers);
+	this.state.peers =us.shuffle(this.state.peers);
 	
 	return this.state.peers[0];
 }
@@ -49,20 +76,21 @@ GossipFacade.prototype.lookup = function(peer)
 	return this.state.urls[peer];
 }
 
-GossipFacade.prototype.sendRumor = function(state,cb)
+GossipFacade.prototype.sendRumor = function(cb)
 {
     var self = this;
-    setTimeout(function(){
-
-	var q = self.getPeer(state);
-	var s = self.prepareMsg(state,q);
+   
+	var q = self.getPeer(self.state);
+	var s = self.prepareMsg(self.state,q);
 	var url = self.lookup(q);
-	self.send(url,s,cb);
-	if (state.testing==false)
+	self.send(url+ "/api/consumeRumor",self.state,cb);
+//	if (self.state.testing==false)
 	{
-		setTimeout(self.time,this);
+		
 	}	
-	});
+	
+
+
 
 }
 /**
@@ -84,8 +112,37 @@ GossipFacade.prototype.update = function(state,s)
 	return state;
 }
 
+GossipFacade.prototype.isRumor = function(msg)
+{
+	return true;//TODO impliment
+}
+
+GossipFacade.prototype.isWant = function(msg)
+{
+	return false;//TODO impliment
+}
+
+GossipFacade.prototype.store = function(msg)
+{
+	var self = this;
+	if (typeof msg == "undefined") return;
+	if (msg.hasOwnProperty("State") == false) return;
+	if (typeof msg.State.hasOwnProperty("messages") == false) return;
+
+	us.each(msg.State.messages,function(val,key){
+		debugger;		
+		if (!self.state.messages.hasOwnProperty(key))
+		{	
+			self.state.messages[key] = val;
+		}
+
+	});
+	
+}
+
 GossipFacade.prototype.handleRumor = function(msg)
 {
+	
 	var t = msg;
 	if (this.isRumor(t))
 	{

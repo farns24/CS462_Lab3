@@ -27,7 +27,7 @@ var restGw = new MyRestGw();
 
 
 
-var port = 3333;
+var port = 6666;
 var gossipF = new GossipFacade(peers,urls,dao,restGw,"http://104.236.235.18:"+ port);//:=var chatState = {"rumors":[]};
 mongoose.connect(dbConfig.database);
 
@@ -243,7 +243,7 @@ app.get( "/api/chatstate", function(req,res){
 app.post( "/api/consumeRumor",function(req,res)
 {
 	debugger;
-	gossipF.checkRegistry(req.body.State.host);
+	gossipF.checkRegistry(req.headers.host);
 	gossipF.handleRumor(req.body);
 	res.status(200).json({"Status":"Success"});
 
@@ -273,5 +273,5 @@ app.use(express.static('public'));
 
 app.listen(port);
 
-console.log("App Started on port 3333");
+console.log("App Started on port "+ port);
 

@@ -1,27 +1,30 @@
 
+var request = require('request');
+
 function RestGateway()
 {
 
 
 }
 
-RestGateway.prototype.send = function(url,s)
+RestGateway.prototype.send = function(url,s,cb)
 {
+	if (typeof s == "object")
+	{
+//		s = JSON.stringify(s);
+	}
 	var options = {
   		'url': url,
   		'method':"POST",
-  		'body': s,
-  		'headers': {
-    		'User-Agent': 'request'
- 		 }
+		'json': true,
+  		'body': {State:s},
 	};
- 
 	function callback(error, response, body) {
   		if (!error && response.statusCode == 200) {
   		}
 	}
  
-	request(options, callback);
+	request(options, cb);
 
 }
 module.exports = RestGateway;
